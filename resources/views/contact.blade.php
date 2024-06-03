@@ -24,6 +24,8 @@
 </div>
 <!-- END SECTION BREADCRUMB -->
 <!-- END SECTION BREADCRUMB -->
+<!-- END SECTION BREADCRUMB -->
+<!-- END SECTION BREADCRUMB -->
 
 <!-- START MAIN CONTENT -->
 <div class="main_content">
