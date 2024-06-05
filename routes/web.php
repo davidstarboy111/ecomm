@@ -66,4 +66,11 @@ Route::middleware(['auth', 'isAdmin'])->group(function(){
 
    //delete products
    Route::get('/deleteproduct/{id}', [AdminController::class, 'deleteproduct'])->name('deleteproduct');
+
+   //edit product
+   Route::get('/editProduct/{id}', [AdminController::class, 'editProduct'])->name('editProduct');
+
+   //update product
+   Route::post('/productUpdate/{id}', [AdminController::class, 'productUpdate'])->name('productUpdate');
+
 });

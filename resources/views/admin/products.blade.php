@@ -89,7 +89,7 @@
                                             <td>{{  \carbon\carbon::parse($product->updated_at)->format('d M, Y h:i A') }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a onclick="return confirm('Are you sure you want to edit the product')" class="dropdown-item remove-list text-success" href=""><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
+                                                    <a onclick="return confirm('Are you sure you want to edit the product')" class="dropdown-item remove-list text-success" href="{{ route('editProduct', $product->id) }}"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
 
                                                     <a onclick="return confirm('Are you sure you want to delete this product')" class="dropdown-item remove-list text-success" href="{{ route('deleteproduct', $product->id) }}">
                                                         <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Delete

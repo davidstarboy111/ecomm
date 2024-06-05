@@ -1,7 +1,6 @@
 @extends('layout.admin')
 @section('content')
 
-
 <div class="main-content">
 
     <div class="page-content">
@@ -11,7 +10,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Create product</h4>
+                        <h4 class="mb-sm-0">update product</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -25,7 +24,7 @@
             </div>
             <!-- end page title -->
 
-            <form action="{{ route('addProduct') }}" enctype="multipart/form-data" method="POST" id="createproduct-form" autocomplete="off" class="needs-validation">
+            <form action="{{ route('productUpdate', $product->id) }}" enctype="multipart/form-data" method="POST" id="createproduct-form" autocomplete="off" class="needs-validation">
                 @csrf
                 <div class="row justify-content-center">
                     <div class="col-xl-10 col-lg-8">
@@ -48,7 +47,7 @@
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label" for="product-title-input">Product Name</label>
-                                    <input type="text" name="productName" class="form-control" id="product-title-input" value="" placeholder="Enter product name">
+                                    <input type="text" name="productName" class="form-control" id="product-title-input" value="{{ $product->productName }}" placeholder="Enter product name">
                                     <span class="text-danger">@error('productName'){{ $message }}@enderror</span>
                                 </div>
 
@@ -63,7 +62,7 @@
                                         <select class="form-select" id="choices-category-input" name="productCategory">
                                             <option disabled="true" selected="false">Select product category</option>
                                             @foreach ($categoryLinks as $category )
-                                            <option value="{{ $category->category }}">{{ $category->category }}</option>
+                                            <option value="{{ $category->category }}" {{ $category->category == $product->productCategory ? 'selected' : '' }}>{{ $category->category }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -89,6 +88,10 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <label for="">Previous image</label>
+                                <img src="/productFolder/{{ $product->productImage }}" width="100" alt="product image">
+                            </div>
+                            <div class="card-body">
                                 <input type="file" name="productImage" class="form-control">
                             </div>
                         </div>
@@ -100,7 +103,7 @@
                             </div>
                             <div class="card-body">
                                 <p class="text-muted mb-2">Add short description for product</p>
-                                <textarea  class="form-control" name="productDescription" id="summernote" rows="3"></textarea>
+                                <textarea  class="form-control" name="productDescription" id="summernote" rows="3">{{ $product->productDescription }}</textarea>
                                 <span class="text-danger">@error('productDescription'){{ $message }}@enderror</span>
                             </div>
                             <!-- end card body -->
@@ -127,7 +130,7 @@
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label class="form-label" for="manufacturer-name-input">manufacturerName</label>
-                                            <input type="text" value="" name="manufacturerName" class="form-control" id="manufacturer-name-input" placeholder="manufacturerName">
+                                            <input type="text" value="{{ $product->manufacturerName }}" name="manufacturerName" class="form-control" id="manufacturer-name-input" placeholder="manufacturerName">
                                             <span class="text-danger">@error('manufacturerName'){{ $message }}@enderror</span>
                                         </div>
                                     </div>
@@ -137,10 +140,10 @@
                                             <span class="text-danger">@error('warranty'){{ $message }}@enderror</span>
 
                                             <select class="form-select" name="warranty">
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
+                                                <option value="0"{{ $product->warranty == '0' ? 'selected' : '' }}>0</option>
+                                                <option value="1"{{ $product->warranty == '1' ? 'selected' : '' }}>1</option>
+                                                <option value="2"{{ $product->warranty == '2' ? 'selected' : '' }}>2</option>
+                                                <option value="3"{{ $product->warranty == '3' ? 'selected' : '' }}>3</option>
                                                 <span class="text-danger">@error('warranty'){{ $message }}@enderror</span>
                                             </select>
                                         </div>
@@ -154,10 +157,9 @@
 
                                         <select class="form-select" name="featuredProduct">
                                             <option selected disabled >Select</option>
-                                            <option value="featured-product" >featuredProduct</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <span class="text-danger">@error('featuredProduct'){{ $message }}@enderror</span>
+                                            <option value="2"{{ $product->featuredProduct == '2' ? 'selected' : '' }}>2</option>
+                                            <option value="3"{{ $product->featuredProduct == '3' ? 'selected' : '' }}>3</option>
+                                            <span class="text-danger">@error('status'){{ $message }}@enderror</span>
                                         </select>
                                     </div>
                                 </div>
@@ -169,8 +171,7 @@
                                             <label class="form-label" for="product-price-input">Price</label>
                                             <div class="input-group has-validation mb-3">
                                                 <span class="input-group-text" id="product-price-addon">$</span>
-                                                <input type="text" value="" name="productPrice" class="form-control" id="product-price-input" placeholder="Enter price" aria-label="Price" aria-describedby="product-price-addon">
-                                                <span class="text-danger">@error('productPrice'){{ $message }}@enderror</span>
+                                                <input type="text" value="{{ $product->productPrice }}" name="productPrice" class="form-control" id="product-price-input" placeholder="Enter price" aria-label="Price" aria-describedby="product-price-addon">
                                             </div>
 
                                         </div>
@@ -180,7 +181,7 @@
                                             <label class="form-label" for="product-discount-input">Discount</label>
                                             <div class="input-group has-validation mb-3">
                                                 <span class="input-group-text" id="product-discount-addon">%</span>
-                                                <input type="text" value="" name="discountPrice" class="form-control" id="product-discount-input" placeholder="Enter discount" aria-label="discount" aria-describedby="product-discount-addon">
+                                                <input type="text" value="{{ $product->discountPrice }}" name="discountPrice" class="form-control" id="product-discount-input" placeholder="Enter discount" aria-label="discount" aria-describedby="product-discount-addon">
                                                 <span class="text-danger">@error('discountPrice'){{ $message }}@enderror</span>
                                             </div>
 
@@ -190,10 +191,9 @@
                                     <div class="col-lg-3">
                                         <div class="mb-3">
                                             <label class="form-label" for="">Quantity</label>
-                                            <span class="text-danger">@error('Quantity'){{ $message }}@enderror</span>
-                                            <input type="text" value="" name="quantity" class="form-control" id="manufacturer-name-input" placeholder="Enter manufacturer name">
+                                            <input type="text" value="{{ $product->quantity}}" name="quantity" class="form-control" id="manufacturer-name-input" placeholder="Enter manufacturer name">
+                                            <span class="text-danger">@error('quantity'){{ $message }}@enderror</span>
                                         </div>
-                                        
                                     </div>
                                     <!-- end col -->
                                 </div>
@@ -204,11 +204,10 @@
                                             <label for="choices-publish-status-input" class="form-label">Status</label>
 
                                             <select class="form-select" name="status">
-                                                <option value="available">Available</option>
-                                                <option value="not-available">Not Available</option>
+                                                <option value="available"{{ $product->status == 'available' ? 'selected' : '' }}>Available</option>
+                                                <option value="not-available"{{ $product->status == 'not available' ? 'selected' : '' }}>Not Available</option>
                                             </select>
                                         </div>
-                                        <span class="text-danger">@error('status'){{ $message }}@enderror</span>
                                     </div>
                                 </div>
                                 <!-- end row -->
@@ -273,7 +272,6 @@
     });
 </script>
 @endsection
-
 
 
 <!-- swift alert -->
