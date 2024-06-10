@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -149,6 +150,25 @@ public function addProduct(Request $request)
     
             return redirect()->route('products')->with('message', 'Product updated successfully');
         }
+
+        
     
     }
+    public function userList()
+        {
+            $users = User::where('role_as', '0')->paginate(20);
+            return view('admin.user_List', compact('users'));
+        }
+
+        //delete id
+ public function deleteuser($id)
+ {
+     
+    $data = User::find($id);
+     $data->delete();
+     return redirect()->back()->with('suceess', 'user deleted successfully');
+ 
+ }
+
+ 
 }
