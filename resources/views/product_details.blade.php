@@ -34,49 +34,61 @@
                 <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
                     <div class="product-image">
                         <div class="product_img_box">
-                            <img id="product_img" src='assets/images/product_img1.jpg'>
+                            <img id="product_img" src='/productFolder/{{ $data->productImage }}'>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="pr_detail">
                         <div class="product_description">
-                            <h4 class="product_title"><a href="#">Blue Dress For Woman</a></h4>
+                            <h4 class="product_title"><a href="{{ route
+                                ('product_details', $data->id) }}">{{ $data->productName }}</a></h4>
                             <div class="product_price">
-                                <span class="price">$45.00</span>
-                                <del>$55.25</del>
+                                <span class="price">
+                                    @if($data->discountPrice != null)
+                                    <span class="price">${{ number_format
+                                    ($data->discountPrice) }}</span>
+                                    <del>${{ number_format($data->productPrice) }}</del>
+                                    @else
+                                    <span class="price">${{ number_format
+                                    ($data->discountPrice) }}</span>
+                                    @endif
                             </div>
                             <div class="d-flex align-items-center gap-2">
-                                <p style="margin-bottom: 0px;">Quantity</p>
-                                <span>(21)</span>
+                                <p style="margin-bottom: 0px;">{{ $data->quantity }}</p>
+                               
                             </div>
-                            <div class="pr_desc">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.</p>
-                            </div>
+                           
                             <div class="product_sort_info">
                                 <ul>
-                                    <li><i class="linearicons-shield-check"></i> 1 Year AL Jazeera Brand Warranty</li>
+                                    <li><i class="linearicons-shield-check">Warranty of </i>{{ $data->warranty }}</li>
                                 </ul>
                             </div>
                         </div>
                         <hr>
                         <div class="cart_extra">
-                            <div class="cart-product-quantity">
-                                <div class="quantity">
-                                    <input type="button" value="-" class="minus">
-                                    <input type="text" name="quantity" value="1" title="Qty" class="qty" size="4">
-                                    <input type="button" value="+" class="plus">
+                        <form action="{{ route('addToCart', $data->id) }}" method="POST">
+                                @csrf
+
+                                <div class="cart-product-quantity">
+                                    <div class="quantity">
+                                        <input type="button" value="-" class="minus">
+                                        <input type="text" name="quantity" value="1" title="Qty" class="qty" size="4">
+                                        <input type="button" value="+" class="plus">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="cart_btn">
-                                <button class="btn btn-fill-out btn-addtocart" type="button"><i class="icon-basket-loaded"></i> Add to cart</button>
-                                <a class="add_compare" href="#"><i class="icon-shuffle"></i></a>
-                                <a class="add_wishlist" href="#"><i class="icon-heart"></i></a>
-                            </div>
+                                <div class="cart_btn">
+                                    <button class="btn btn-fill-out btn-addtocart" type="submit"><i class="icon-basket-loaded"></i> Add to cart</button>
+                                    {{-- <a class="add_compare" href="#"><i class="icon-shuffle"></i></a>
+                                    <a class="add_wishlist" href="#"><i class="icon-heart"></i></a> --}}
+                                </div>
+
+                            </form>
+                           
                         </div>
                         <hr>
                         <ul class="product-meta">
-                            <li>Category: <a href="#">Clothing</a></li>
+                            <li>{{ $data->productCategory }}</li>
                         </ul>
 
                         <div class="product_share">
@@ -107,8 +119,9 @@
                         </ul>
                         <div class="tab-content shop_info_tab">
                             <div class="tab-pane fade show active" id="Description" role="tabpanel" aria-labelledby="Description-tab">
-                                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Vivamus bibendum magna Lorem ipsum dolor sit amet, consectetur adipiscing elit.Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</p>
-                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+                                
+                                <p> {!!$data->productDescription!!}</p>
+
                             </div>
                         </div>
                     </div>
@@ -131,27 +144,39 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="arrival" role="tabpanel" aria-labelledby="arrival-tab">
                                     <div class="row shop_container">
+                                        @foreach ($products as $similar)
+                                            
+                                       
                                         <div class="col-lg-3 col-md-4 col-6">
                                             <div class="product">
                                                 <div class="product_img">
                                                     <a href="shop-product-detail.html">
-                                                        <img src="assets/images/product_img1.jpg" alt="product_img1">
+                                                        <img src="/productFolder/{{ $similar->productImage }}" alt="product_img1">
                                                     </a>
 
                                                 </div>
                                                 <div class="product_info">
-                                                    <h6 class="product_title"><a href="shop-product-detail.html">Blue Dress For Woman</a></h6>
+                                                    <h6 class="product_title"><a href="{{ route
+                                                        ('product_details', $similar->id) }}">{{ $similar->productName }}</a></h6>
                                                     <div class="product_price">
-                                                        <span class="price">$45.00</span>
-                                                        <del>$55.25</del>
+                                                        @if($similar->discountPrice != null)
+                                                         <span class="price">${{ number_format
+                                                        ($similar->discountPrice) }}</span>
+                                                        <del>${{ number_format($similar->productPrice) }}</del>
+                                                         @else
+                                                        <span class="price">${{ number_format
+                                                        ($similar->discountPrice) }}</span>
+                                                @endif
                                                     </div>
                                                     <div class="d-flex align-items-center gap-2">
-                                                        <p style="margin-bottom: 0px;">Quantity</p>
-                                                        <span>(21)</span>
+                                                        <p style="margin-bottom: 0px;">{{ $data->quantity }}</p>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
