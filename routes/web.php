@@ -39,6 +39,24 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//show carts
+Route::get('/carts', [usercontroller::class, 'carts'])->name('carts');
+//pay on delivery route
+
+Route::get('/payonDelivery', [usercontroller::class, 'payonDelivery'])->name('payonDelivery');
+
+
+
+Route::get('product_details/{id}', [usercontroller::class, 'product_details'])->name('product_details');
+
+
+//add to cart
+Route::post('/addToCart/{id}', [usercontroller::class, 'addToCart'])->name('addToCart');
+
+//delete cart
+Route::get('/deletecarte/{id}', [usercontroller::class, 'deletecarte'])->name('deletecarte');
+
+
 Route::middleware(['auth', 'isAdmin'])->group(function(){
     //route for admin dashboaed
    Route::get('admin/dashboard', [AdminController::class, 'admin_dashboard'])->name('admin_dashboard');
@@ -66,4 +84,20 @@ Route::middleware(['auth', 'isAdmin'])->group(function(){
 
    //delete products
    Route::get('/deleteproduct/{id}', [AdminController::class, 'deleteproduct'])->name('deleteproduct');
+
+   //edit product
+   Route::get('/editProduct/{id}', [AdminController::class, 'editProduct'])->name('editProduct');
+
+   //update product
+   Route::post('/productUpdate/{id}', [AdminController::class, 'productUpdate'])->name('productUpdate');
+   
+   //user list route
+   Route::get('admin/userList', [AdminController::class, 'userList'])->name('userList');
+
+   //delete user
+   Route::get('/deleteuser/{id}', [AdminController::class, 'deleteuser'])->name('deleteuser');
+
+   
+   
+
 });

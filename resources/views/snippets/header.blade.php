@@ -69,6 +69,7 @@
                         <li><a class="nav-link nav_item" href="">Blog</a></li>
                     </ul>
                 </div>
+                @auth
                 <ul class="navbar-nav attr-nav align-items-center">
                     <li><a href="javascript:;" class="nav-link search_trigger"><i class="linearicons-magnifier"></i></a>
                         <div class="search_wrap">
@@ -80,10 +81,13 @@
                         </div>
                         <div class="search_overlay"></div>
                     </li>
-                    <li class=""><a class="nav-link " href="#"><i class="linearicons-cart"></i><span class="cart_count">2</span></a>
+                    <li class=""><a href="{{ route('carts') }}"><i class="linearicons-cart"></i><span class="cart_Count">{{$cartCount}}</span></a>
 
                     </li>
                 </ul>
+                    
+                @endauth
+               
                 <!--- logout---->
                 @auth
                 <a class="btn btn-fill-out rounded-0 staggered-animation text-uppercase animated slideInLeft" href="{{ route('user_logout') }}" onclick="event.preventDefault();
